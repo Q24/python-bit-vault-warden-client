@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bit-vault-warden-client"
+version = "1.0.0"
+description = "A Python client to fetch data from Bitwarden and Vaultwarden"
+authors = [
+    {name = "Olegs Capligins", email = "ocapligins@ilionx.com"},
+    {name = "Arjen Buising", email = "abuising@ilionx.com"},
+    {name = "Tonny Nguyen", email = "tnguyen@ilionx.com"},
+    {name = "Martijn Suijlen", email = "msuijlen@ilionx.com"},
+]
+license = "MIT"
+license-files = ["LICEN[CS]E.*"]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "cryptography",
+    "requests",
+    "requests[socks]",
+]
+
+[project.urls]
+Homepage = "https://github.com/Q24/python-bit-vault-warden-client"
+Repository = "https://github.com/Q24/python-bit-vault-warden-client"

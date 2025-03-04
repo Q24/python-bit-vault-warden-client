@@ -1,0 +1,9 @@
+coverage
+flake8
+pip-tools
+pylint
+pytest
+pytest-cov
+pytest-cover
+rich
+twine
