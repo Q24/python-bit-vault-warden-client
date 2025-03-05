@@ -45,6 +45,13 @@ class WardenWebApi:
             self._session.proxies.update(proxies)
 
     def fetch_credentials(self, query: str) -> Optional[Result]:
+        """
+        Fetch credentials by its name. Get it either from remote or from cache,
+        base on 'cache mode' configuration value setting.
+
+        :param query: credential item name
+        :return: Result | None
+        """
         # try cache first, if file exists and cache ttl is not expired
         # if cache ttl is expired, fetch from remote and refresh cache
         if self.config.cache_mode == WardenCacheMode.AGGRESSIVE:
@@ -63,6 +70,14 @@ class WardenWebApi:
 
     # pylint: disable=too-many-locals
     def fetch_credentials_from_remote(self, query: str) -> Optional[Result]:
+        """
+        Fetch credentials by its name from remote and refresh the cache.
+        Don't use directly unless you really know what to do. Prefer to
+        use fetch_credentials()
+
+        :param query: credential item name
+        :return: Result | None
+        """
         # Pre-Login
         prelogin_url = urljoin(self.config.url, "/api/accounts/prelogin")
         prelogin_data = PreLoginData(self.config.username)
@@ -112,6 +127,14 @@ class WardenWebApi:
         return self.__get_result_from_data(query, api_sync_response_data, bitwarden_secrets)
 
     def fetch_credentials_from_cache(self, query: str) -> Optional[Result]:
+        """
+        Fetch credentials from cache. This will try to return Result even if cache
+        is expired. Don't use directly unless you really know what to do. Prefer to
+        use fetch_credentials()
+
+        :param query: credential item name
+        :return: Result | None
+        """
         if not self.cache_exists:
             raise FileNotFoundError(self.config.cache_file)
 

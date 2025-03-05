@@ -1,5 +1,6 @@
 coverage
 flake8
+hatch
 pip-tools
 pylint
 pytest

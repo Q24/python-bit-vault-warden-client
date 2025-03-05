@@ -1,4 +1,4 @@
-from .models import WardenConfiguration, WardenAuthData, WardenCacheMode
+from .models import WardenConfiguration, WardenAuthData, WardenCacheMode, Result
 from .client import WardenWebApi as WardenClient
 from .errors import CredentialsError, CredentialsNotFoundError
 
@@ -11,4 +11,5 @@ __all__ = [
     "WardenClient",
     "CredentialsError",
     "CredentialsNotFoundError",
+    "Result",
 ]

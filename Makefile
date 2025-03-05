@@ -8,6 +8,14 @@ help:
 	@grep -E '(^[/\.a-zA-Z_\-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/' && echo ""
 
 ##
+## Building, publishing
+.PHONY: build publish
+build:  ## Build package
+	hatch build
+publish: build  ## Publish package to pypi
+	hatch publish
+
+##
 ## Linting
 .PHONY: check flake pylint
 check: lint flake  ## Run code checks with both pylint and flake8
