@@ -192,23 +192,45 @@ def decrypt_bitwarden_data(data: dict, bitwarden_secrets: BitwardenSecrets) -> s
         if not enc_key or not mac_key:
             raise RuntimeError('This should not happen - empty encKey or macKey')
 
-        if "data" not in ciphername:
-            raise RuntimeError('Empty, broken or unsupported entity')
-
-        if "name" in ciphername["data"] and ciphername["data"]["name"]:
-            ciphername["data"]["name"] = get_json_escaped_string(ciphername["data"]["name"], enc_key, mac_key)
-
-        if "notes" in ciphername["data"] and ciphername["data"]["notes"]:
-            ciphername["data"]["notes"] = get_json_escaped_string(ciphername["data"]["notes"], enc_key, mac_key)
-
-        if "password" in ciphername["data"] and ciphername["data"]["password"]:
-            ciphername["data"]["password"] = get_json_escaped_string(ciphername["data"]["password"], enc_key, mac_key)
-
-        if "username" in ciphername["data"] and ciphername["data"]["username"]:
-            ciphername["data"]["username"] = get_json_escaped_string(ciphername["data"]["username"], enc_key, mac_key)
-
-        if "totp" in ciphername["data"] and ciphername["data"]["totp"]:
-            ciphername["data"]["totp"] = get_json_escaped_string(ciphername["data"]["totp"], enc_key, mac_key)
+        if "data" in ciphername:
+            if "name" in ciphername["data"] and ciphername["data"]["name"]:
+                ciphername["data"]["name"] = get_json_escaped_string(
+                    ciphername["data"]["name"], enc_key, mac_key
+                )
+            if "notes" in ciphername["data"] and ciphername["data"]["notes"]:
+                ciphername["data"]["notes"] = get_json_escaped_string(
+                    ciphername["data"]["notes"], enc_key, mac_key
+                )
+            if "password" in ciphername["data"] and ciphername["data"]["password"]:
+                ciphername["data"]["password"] = get_json_escaped_string(
+                    ciphername["data"]["password"], enc_key, mac_key
+                )
+            if "username" in ciphername["data"] and ciphername["data"]["username"]:
+                ciphername["data"]["username"] = get_json_escaped_string(
+                    ciphername["data"]["username"], enc_key, mac_key
+                )
+            if "totp" in ciphername["data"] and ciphername["data"]["totp"]:
+                ciphername["data"]["totp"] = get_json_escaped_string(
+                    ciphername["data"]["totp"], enc_key, mac_key
+                )
+        else:
+            if "name" in ciphername and ciphername["name"]:
+                ciphername["name"] = get_json_escaped_string(ciphername["name"], enc_key, mac_key)
+            if "notes" in ciphername and ciphername["notes"]:
+                ciphername["notes"] = get_json_escaped_string(ciphername["notes"], enc_key, mac_key)
+            if "login" in ciphername and ciphername["login"]:
+                if "password" in ciphername["login"] and ciphername["login"]["password"]:
+                    ciphername["login"]["password"] = get_json_escaped_string(
+                        ciphername["login"]["password"], enc_key, mac_key
+                    )
+                if "username" in ciphername["login"] and ciphername["login"]["username"]:
+                    ciphername["login"]["username"] = get_json_escaped_string(
+                        ciphername["login"]["username"], enc_key, mac_key
+                    )
+                if "totp" in ciphername["login"] and ciphername["login"]["totp"]:
+                    ciphername["login"]["totp"] = get_json_escaped_string(
+                        ciphername["login"]["totp"], enc_key, mac_key
+                    )
 
     return json.dumps(data, indent=2, ensure_ascii=False)
 

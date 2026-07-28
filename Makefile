@@ -9,11 +9,14 @@ help:
 
 ##
 ## Building, publishing
-.PHONY: build publish
-build:  ## Build package
+.PHONY: requirements build publish
+build: requirements  ## Build package
 	hatch build
 publish: build  ## Publish package to pypi
 	hatch publish
+requirements: ## Compile pyproject to requirements.txt
+	uv export --format requirements.txt --no-dev --no-hashes --no-annotate --no-header >requirements.txt
+	uv export --format requirements.txt --dev --no-hashes --no-annotate --no-header >requirements-dev.txt
 
 ##
 ## Linting
@@ -28,7 +31,7 @@ flake:  ## Check code with flake8
 ## Testing
 .PHONY: test test-with-coverage
 test:  ## Run unit tests
-	@python -m pytest ./tests
+	@python -m pytest -v -q -s ./tests
 test-with-coverage:  ## Run unit tests with coverage
 	@rm -rf ./htmlcov
 	@rm -f ./.coverage

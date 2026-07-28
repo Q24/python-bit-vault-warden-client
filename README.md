@@ -57,7 +57,7 @@ cache_ttl=int
 cache_mode=WardenCacheMode.FALLBACK  
 cache_mode=WardenCacheMode.AGGRESSIVE
 ```
-- **WardenCacheMode.FALLBACK** for using cache only when remote is not available. In this mode client will try to use cache even if it is expired with logged warning. 
+- **WardenCacheMode.FALLBACK** for using cache only when remote is not available.<br>In this mode client will always query remote, and will try to use cache if remote is not available and even if cache is expired (in this case it will trigger a warning). 
 - **WardenCacheMode.AGGRESSIVE** cache will be used firsthand, and remote will be queried only if cache doesn't exist or is expired
 
 ---
