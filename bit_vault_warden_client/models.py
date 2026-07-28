@@ -20,6 +20,10 @@ class Result:
         for k, v in self.raw_data.items():
             if hasattr(self, k) and isinstance(v, str):
                 setattr(self, k, v.replace("\\\\", "\\"))
+            if k == 'login':
+                for login_k, login_v in v.items():
+                    if hasattr(self, login_k) and isinstance(login_v, str):
+                        setattr(self, login_k, login_v.replace("\\\\", "\\"))
 
     def __iter__(self):
         yield from (self.username, self.password, self.totp)

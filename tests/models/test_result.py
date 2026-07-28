@@ -6,6 +6,14 @@ raw_data = {
     "totp": "123456",
 }
 
+raw_data_from_137 = {
+    "login": {
+        "username": "testuser",
+        "password": "testpass",
+        "totp": "123456",
+    }
+}
+
 raw_data_no_totp = {
     "username": "testuser",
     "password": "testpass",
@@ -14,6 +22,13 @@ raw_data_no_totp = {
 
 def test_result_init():
     result = Result(raw_data=raw_data)
+    assert result.username == "testuser"
+    assert result.password == "testpass"
+    assert result.totp == "123456"
+
+
+def test_result_init_137():
+    result = Result(raw_data=raw_data_from_137)
     assert result.username == "testuser"
     assert result.password == "testpass"
     assert result.totp == "123456"

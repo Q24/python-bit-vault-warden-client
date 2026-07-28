@@ -159,8 +159,13 @@ class WardenWebApi:
         decrypted_data = decrypt_bitwarden_data(data, bitwarden_secrets)
 
         for item in json.loads(decrypted_data)["ciphers"]:
-            if item["data"]["name"].lower() == query.lower():
-                if "deletedDate" not in item or item["deletedDate"] is None:
-                    return Result(item["data"])
+            if "data" in item:
+                if item["data"]["name"].lower() == query.lower():
+                    if "deletedDate" not in item or item["deletedDate"] is None:
+                        return Result(item["data"])
+            else:
+                if item["name"].lower() == query.lower():
+                    if "deletedDate" not in item or item["deletedDate"] is None:
+                        return Result(item)
 
         raise CredentialsNotFoundError(f"Warden dataset does not contain valid credentials for '{query}'")
