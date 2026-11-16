@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bit-vault-warden-client"
-version = "1.1.0"
+version = "1.2.0"
 description = "A Python client to fetch data from Bitwarden and Vaultwarden"
 authors = [
     {name = "Olegs Capligins", email = "ocapligins@ilionx.com"},

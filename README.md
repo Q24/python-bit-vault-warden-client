@@ -15,6 +15,21 @@ Python http client to fetch data from Bitwarden or Vaultwarden.
 pip install bit-vault-warden-client
 ```
 
+### Supported Python versions
+
+The client works on Python 3.8 and newer, but only **Python 3.9.2+** gets a `cryptography` release
+without known vulnerabilities:
+
+| Python            | `cryptography` installed       | Status                                                                                  |
+|-------------------|--------------------------------|-----------------------------------------------------------------------------------------|
+| 3.9.2 and newer   | 50.0.2 or newer (enforced)     | Recommended. Fixes CVE-2026-69247, CVE-2026-69248, CVE-2026-69249, GHSA-537c-gmf6-5ccf  |
+| 3.8 – 3.9.1       | older release (47.0.0 on 3.8)  | Works, **at your own risk**: still affected by the CVEs above, no fixed release exists  |
+
+`cryptography` 50.x dropped support for Python older than 3.9.2, so on those versions the newest available
+release is installed and the vulnerabilities stay unpatched. Most of them are in features this client does not
+use (PKCS#7, X.509 verification), but the bundled OpenSSL one does apply. Upgrade to a supported Python version
+to be safe.
+
 # Usage
 
 ```python
