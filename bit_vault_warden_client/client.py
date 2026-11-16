@@ -1,7 +1,7 @@
+from __future__ import annotations
 import json
 import hashlib
 import logging
-from typing import Optional
 from base64 import b64encode
 
 import requests
@@ -44,7 +44,7 @@ class WardenWebApi:
             logging.debug('urllib will use proxy %s', proxies)
             self._session.proxies.update(proxies)
 
-    def fetch_credentials(self, query: str) -> Optional[Result]:
+    def fetch_credentials(self, query: str) -> Result | None:
         """
         Fetch credentials by its name. Get it either from remote or from cache,
         base on 'cache mode' configuration value setting.
@@ -78,7 +78,7 @@ class WardenWebApi:
             return self.fetch_credentials_from_cache(query)
 
     # pylint: disable=too-many-locals
-    def fetch_credentials_from_remote(self, query: str) -> Optional[Result]:
+    def fetch_credentials_from_remote(self, query: str) -> Result | None:
         """
         Fetch credentials by its name from remote and refresh the cache.
         Don't use directly unless you really know what to do. Prefer to
@@ -135,7 +135,7 @@ class WardenWebApi:
 
         return self.__get_result_from_data(query, api_sync_response_data, bitwarden_secrets)
 
-    def fetch_credentials_from_cache(self, query: str) -> Optional[Result]:
+    def fetch_credentials_from_cache(self, query: str) -> Result | None:
         """
         Fetch credentials from cache. This will try to return Result even if cache
         is expired. Don't use directly unless you really know what to do. Prefer to
@@ -164,7 +164,7 @@ class WardenWebApi:
         return self.__get_result_from_data(query, cache_contents["DATA"], bitwarden_secrets)
 
     @staticmethod
-    def __get_result_from_data(query: str, data: dict, bitwarden_secrets: BitwardenSecrets) -> Optional[Result]:
+    def __get_result_from_data(query: str, data: dict, bitwarden_secrets: BitwardenSecrets) -> Result | None:
         decrypted_data = decrypt_bitwarden_data(data, bitwarden_secrets)
 
         for item in json.loads(decrypted_data)["ciphers"]:

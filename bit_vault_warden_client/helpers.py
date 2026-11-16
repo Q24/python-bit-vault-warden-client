@@ -1,16 +1,16 @@
+from __future__ import annotations
 from os import path
 from time import time
-from typing import Tuple
 
 
 def urljoin(*args) -> str:
     """
     Joins given arguments into an url
     """
-    return "/".join(filter(None, map(lambda x: str(x).strip('/'), args)))
+    return "/".join(filter(None, (str(x).strip('/') for x in args)))
 
 
-def cache_file_exists_and_not_expired(cache_file: str, cache_ttl: int) -> Tuple[bool, bool]:
+def cache_file_exists_and_not_expired(cache_file: str, cache_ttl: int) -> tuple[bool, bool]:
     """
     Check if cache file exists and it's not expired
 

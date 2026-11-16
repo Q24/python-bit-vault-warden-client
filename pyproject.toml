@@ -41,4 +41,21 @@ dev = [
     "pytest>=8.3.5",
     "pytest-cov>=5.0.0",
     "pytest-cover>=3.0.0",
+    "ruff>=0.17.5",
+]
+
+[tool.ruff]
+target-version = "py38"
+
+[tool.ruff.lint]
+# Ruff's default rule set (0.17+) is already broad, see `ruff check --show-settings`.
+# These are not enabled by default today; they stay listed because the code relies on them on purpose.
+ignore = [
+    "LOG015",  # root logger calls (`logging.info(...)`) are the logging convention of this project
+    "BLE001",  # `except Exception` is deliberate where the robot must keep going (cleanup, best-effort UI steps)
+    "S110",    # `try`/`except`/`pass` for best-effort steps
+    "RUF012",  # mutable class attributes on scenarios and modes are a supported pattern
+    "I001", # unsorted imports
+    "SIM102", # nested if's
+    "RUF022", # unsorted dunder __all__
 ]

@@ -21,9 +21,11 @@ requirements: ## Compile pyproject to requirements.txt
 ##
 ## Linting
 .PHONY: check flake pylint
-check: lint flake  ## Run code checks with both pylint and flake8
+check: lint flake ruff  ## Run code checks with both pylint and flake8
 lint:  ## Check code with pylint
 	-pylint ./bit_vault_warden_client ./tests/
+ruff:  ## Check code with ruff
+	-ruff check tests bit_vault_warden_client
 flake:  ## Check code with flake8
 	-@flake8 -v
 
