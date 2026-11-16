@@ -61,6 +61,15 @@ class WardenWebApi:
                     logging.debug('Cache file is not expired')
                     return self.fetch_credentials_from_cache(query)
 
+        # ignore remote and rely only on cache
+        if self.config.cache_mode == WardenCacheMode.LOCALONLY:
+            if not self.cache_exists:
+                raise RuntimeError('Cache file does not exist')
+            if not self.cache_not_expired:
+                logging.warning('Cache file is expired')
+            logging.debug('Skipping remote query, relying only on cache')
+            return self.fetch_credentials_from_cache(query)
+
         # fetch from remote; if remote is unavailable, try cache
         try:
             return self.fetch_credentials_from_remote(query)

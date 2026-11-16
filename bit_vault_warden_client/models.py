@@ -58,6 +58,7 @@ class PreLoginData:
 class WardenCacheMode(Enum):
     AGGRESSIVE = 1
     FALLBACK = 2
+    LOCALONLY = 3
 
 
 @dataclass(frozen=True)
