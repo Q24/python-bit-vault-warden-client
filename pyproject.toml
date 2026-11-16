@@ -17,7 +17,10 @@ license-files = ["LICEN[CS]E*"]
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "cryptography",
+    # 50.0.2+ fixes CVE-2026-69247, CVE-2026-69248, CVE-2026-69249 and bundled OpenSSL (GHSA-537c-gmf6-5ccf),
+    # it requires Python 3.9.2+, so Python 3.8 stays on the last release supporting it
+    "cryptography>=50.0.2; python_full_version >= '3.9.2'",
+    "cryptography; python_full_version < '3.9.2'",
     "requests",
     "requests[socks]",
 ]
