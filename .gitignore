@@ -10,3 +10,4 @@ venv/
 *.crt
 main.py
 demo.py
+PROGRESS.md

@@ -1,5 +1,6 @@
 import pytest
 from uuid import getnode
+from bit_vault_warden_client.models import WardenAuthData
 from tests.models.login_data_builder import LoginDataBuilder
 
 
@@ -24,6 +25,29 @@ def test_login_data_asdict():
     assert login_data_dict["password"] == "pass1"
     assert login_data_dict["scope"] == "api offline_access"
     assert login_data_dict["deviceName"] == "Bitwarden-Web-API"
+
+
+def test_login_data_default_device_identifier():
+    login_data = WardenAuthData(scope="api", client_id="web", grant_type="password", deviceType=9, deviceName="x")
+    assert login_data.deviceIdentifier == str(getnode())
+    assert login_data.username is None
+    assert login_data.password is None
+
+
+def test_login_data_builder_is_isolated():
+    custom = LoginDataBuilder().with_field("username", "custom").build()
+    assert custom.username == "custom"
+    assert LoginDataBuilder().build().username == "user1"
+
+
+def test_login_data_asdict_is_a_copy():
+    login_data = LoginDataBuilder().build()
+    login_data.asdict()["username"] = "changed"
+    assert login_data.username == "user1"
+
+
+def test_login_data_repr_does_not_expose_password():
+    assert "pass1" not in repr(LoginDataBuilder().build())
 
 
 if __name__ == '__main__':

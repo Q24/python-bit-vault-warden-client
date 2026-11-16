@@ -34,16 +34,44 @@ def test_result_init_137():
     assert result.totp == "123456"
 
 
-def test_result_string_replacement():
+def test_result_values_are_kept_intact():
     data = {
         "username": "test\\\\user",
-        "password": "test\\pass",
+        "password": 'te"st\\pass\u00e9',
         "totp": "123\\456",
+        "notes": "line 1\nline 2",
     }
     result = Result(raw_data=data)
-    assert result.username == "test\\user"
-    assert result.password == "test\\pass"
+    assert result.username == "test\\\\user"
+    assert result.password == 'te"st\\pass\u00e9'
     assert result.totp == "123\\456"
+    assert result.notes == "line 1\nline 2"
+
+
+def test_result_137_notes():
+    result = Result(raw_data={"name": "item", "notes": "some notes", **raw_data_from_137})
+    assert result.notes == "some notes"
+    assert result.astuple() == ("testuser", "testpass", "123456")
+
+
+def test_result_secure_note_without_login():
+    # secure notes have "login": null in the 1.37 schema
+    result = Result(raw_data={"name": "item", "notes": "some notes", "login": None})
+    assert result.notes == "some notes"
+    assert result.astuple() == ("", "", "")
+
+
+def test_result_ignores_empty_values():
+    result = Result(raw_data={"username": None, "password": "", "login": {"totp": None}})
+    assert result.astuple() == ("", "", "")
+    assert result.notes == ""
+
+
+def test_result_repr_does_not_expose_secrets():
+    text = repr(Result(raw_data=raw_data_from_137))
+    assert "testuser" in text
+    assert "testpass" not in text
+    assert "123456" not in text
 
 
 def test_result_iteration():

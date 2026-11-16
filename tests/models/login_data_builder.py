@@ -4,7 +4,7 @@ from bit_vault_warden_client.models import WardenAuthData
 
 
 class LoginDataBuilder:
-    __data = {
+    __defaults = {
         "username": "user1",
         "password": "pass1",
         "scope": "api offline_access",
@@ -15,8 +15,13 @@ class LoginDataBuilder:
         "deviceIdentifier": str(getnode())
     }
 
-    def build(self):
+    def __init__(self):
+        # instance copy, so customizing one builder does not leak into other tests
+        self.__data = dict(self.__defaults)
+
+    def build(self) -> WardenAuthData:
         return WardenAuthData(**self.__data)
 
-    def with_field(self, key: str, value: Any):
+    def with_field(self, key: str, value: Any) -> "LoginDataBuilder":
         self.__data[key] = value
+        return self

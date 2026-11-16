@@ -19,6 +19,8 @@ def cache_file_exists_and_not_expired(cache_file: str, cache_ttl: int) -> tuple[
     :return: tuple [bool: cache file exists, bool: cache file not expired]
     """
     try:
-        return path.isfile(cache_file), path.getmtime(cache_file) > (time() - cache_ttl)
-    except FileNotFoundError:
+        if not path.isfile(cache_file):
+            return False, False
+        return True, path.getmtime(cache_file) > (time() - cache_ttl)
+    except OSError:  # removed in between or not accessible
         return False, False

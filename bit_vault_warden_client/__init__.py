@@ -1,9 +1,9 @@
 from .models import WardenConfiguration, WardenAuthData, WardenCacheMode, Result
 from .client import WardenWebApi as WardenClient
-from .errors import CredentialsError, CredentialsNotFoundError
+from .errors import CredentialsError, CredentialsNotFoundError, UnsupportedEncryptionError
 
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __all__ = [
     "WardenConfiguration",
     "WardenAuthData",
@@ -11,5 +11,6 @@ __all__ = [
     "WardenClient",
     "CredentialsError",
     "CredentialsNotFoundError",
+    "UnsupportedEncryptionError",
     "Result",
 ]

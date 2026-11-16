@@ -1,11 +1,13 @@
 # Python Bitwarden/Vaultwarden client
 
-Python http client to fetch data Bitwarden or Vaultwarden.
+Python http client to fetch data from Bitwarden or Vaultwarden.
 
 ### Current limitations
 
-- Supports only AES encoding (type: 2)
+- Supports only PBKDF2-SHA256 key derivation (KDF type: 0), Argon2id is not supported
+- Supports only AES-256 encryption (type: 2) for vault data and RSA-OAEP (types: 3-6) for organization keys
 - Supports only fetching data, totally not a CRUD API
+- Two-factor authentication is not supported
 
 # Installation
 
@@ -30,7 +32,7 @@ auth_data = WardenAuthData(
     deviceName='Bitwarden-Web-API'
 )
 
-# Create Warden client configuraion
+# Create Warden client configuration
 config = WardenConfiguration(
     url='https://bitwarden.domain.tld',
     username='username@domain.tld',
@@ -40,9 +42,18 @@ config = WardenConfiguration(
 )
 
 # Instantiate client and fetch data
-client = WardenClient(config)
-result = client.fetch_credentials('credentials item name')
+with WardenClient(config) as client:
+    result = client.fetch_credentials('credentials item name')
+
+username, password, totp = result
+notes = result.notes
 ```
+
+- Item name lookup is case-insensitive, items in trash are ignored
+- Personal, organization and individually encrypted (cipher key) items are supported
+- `CredentialsNotFoundError` is raised when there is no item with such name
+- `CredentialsError` is raised when credentials are wrong or login is rejected
+- `UnsupportedEncryptionError` is raised for unsupported KDF or encryption types
 
 # WardenConfiguration options
 
@@ -56,9 +67,11 @@ cache_ttl=int
 ```
 cache_mode=WardenCacheMode.FALLBACK  
 cache_mode=WardenCacheMode.AGGRESSIVE
+cache_mode=WardenCacheMode.LOCALONLY
 ```
-- **WardenCacheMode.FALLBACK** for using cache only when remote is not available.<br>In this mode client will always query remote, and will try to use cache if remote is not available and even if cache is expired (in this case it will trigger a warning). 
-- **WardenCacheMode.AGGRESSIVE** cache will be used firsthand, and remote will be queried only if cache doesn't exist or is expired
+- **WardenCacheMode.FALLBACK** for using cache only when remote is not available.<br>In this mode client will always query remote, and will try to use cache if remote is not available (connection error, timeout or 5xx response) and even if cache is expired (in this case it will trigger a warning). 
+- **WardenCacheMode.AGGRESSIVE** (default) cache will be used firsthand, and remote will be queried only if cache doesn't exist or is expired
+- **WardenCacheMode.LOCALONLY** remote is never queried, cache is used even if it is expired (with a warning). Raises `RuntimeError` if cache doesn't exist
 
 ---
 
@@ -66,7 +79,15 @@ cache_mode=WardenCacheMode.AGGRESSIVE
 cache_filename='bitwarden.rpx.cache',
 ```
 - Cache filename, by default it is `bitwarden.cache` and is always placed in system temporary directory
-- Must not start with `/`, `\` or `..`
+- Must not start with `/`, `\` or `..` and must not point outside of system temporary directory
+- Cache contains encrypted vault data and is readable by its owner only
+
+---
+
+```
+timeout=30
+```
+- Timeout in seconds for each request to remote
 
 ---
 

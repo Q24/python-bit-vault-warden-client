@@ -13,7 +13,7 @@ authors = [
     {name = "Martijn Suijlen", email = "msuijlen@ilionx.com"},
 ]
 license = "MIT"
-license-files = ["LICEN[CS]E.*"]
+license-files = ["LICEN[CS]E*"]
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
