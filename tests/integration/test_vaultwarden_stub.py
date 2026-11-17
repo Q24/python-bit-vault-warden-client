@@ -16,7 +16,7 @@ import requests
 from bit_vault_warden_client import (
     CredentialsError, CredentialsNotFoundError, WardenCacheMode, WardenClient, WardenConfiguration
 )
-from tests.models.login_data_builder import LoginDataBuilder
+from tests.fixtures.login_data_builder import LoginDataBuilder
 
 STUB = Path(__file__).resolve().parents[1] / "_stubs" / "bitwarden.2026-10-1.cache"
 EMAIL = "shader@inbox.lv"

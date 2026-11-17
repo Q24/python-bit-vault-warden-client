@@ -131,6 +131,8 @@ class WardenWebApi:
 
         # Pre-Login, old
         prelogin_url = urljoin(self.config.url, "/api/accounts/prelogin")
+
+        # pylint: disable=not-callable
         prelogin_response = self._session.post(
             url=prelogin_url,
             json=prelogin_data.asdict(),

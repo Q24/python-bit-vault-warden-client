@@ -59,6 +59,7 @@ def stretch(master_key: bytes) -> bytes:
     return enc + mac
 
 
+# pylint: disable=too-many-instance-attributes
 class VaultBuilder:
     """
     Usage:
@@ -90,6 +91,7 @@ class VaultBuilder:
         self.org_keys[org_id] = (key, encrypt_rsa(key, enc_type))
         return self
 
+    # pylint: disable=too-many-arguments,too-many-positional-arguments
     def add_login(
         self,
         name: str,

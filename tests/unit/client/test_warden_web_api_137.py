@@ -6,7 +6,7 @@ from unittest.mock import patch
 from bit_vault_warden_client.client import WardenWebApi
 from bit_vault_warden_client.models import WardenConfiguration, Result, WardenCacheMode
 from bit_vault_warden_client.errors import CredentialsNotFoundError
-from tests.models.login_data_builder import LoginDataBuilder
+from tests.fixtures.login_data_builder import LoginDataBuilder
 
 
 dcs_retval = (b"test_credential", b"encryption_key", b"mac_key")

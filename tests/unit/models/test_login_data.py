@@ -1,7 +1,7 @@
 import pytest
 from uuid import getnode
 from bit_vault_warden_client.models import WardenAuthData
-from tests.models.login_data_builder import LoginDataBuilder
+from tests.fixtures.login_data_builder import LoginDataBuilder
 
 
 def test_login_data_init():

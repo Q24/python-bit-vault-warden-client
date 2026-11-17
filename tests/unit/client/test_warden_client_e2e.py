@@ -17,7 +17,7 @@ from bit_vault_warden_client import (
     WardenCacheMode, WardenClient, WardenConfiguration
 )
 from tests.fixtures.vault_builder import VaultBuilder
-from tests.models.login_data_builder import LoginDataBuilder
+from tests.fixtures.login_data_builder import LoginDataBuilder
 
 EMAIL = "User@Example.com"
 PASSWORD = "master password"

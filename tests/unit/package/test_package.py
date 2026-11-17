@@ -3,7 +3,7 @@ from pathlib import Path
 
 import bit_vault_warden_client
 
-PYPROJECT = Path(__file__).resolve().parents[2] / "pyproject.toml"
+PYPROJECT = Path(__file__).resolve().parents[3] / "pyproject.toml"
 
 
 def test_version_matches_pyproject():

@@ -3,7 +3,7 @@ import os
 from tempfile import NamedTemporaryFile, gettempdir
 import pytest
 from bit_vault_warden_client.models import WardenConfiguration, WardenCacheMode
-from tests.models.login_data_builder import LoginDataBuilder
+from tests.fixtures.login_data_builder import LoginDataBuilder
 
 __url = 'http://localhost'
 __auth_data = LoginDataBuilder().build()
